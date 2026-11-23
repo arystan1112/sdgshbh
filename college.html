@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Высший Технический Колледж</title>
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      color: #1c2540;
+      background-color: #f4f6fb;
+    }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3 { margin: 0 0 12px; line-height: 1.25; }
+    p { margin: 0 0 12px; }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section { padding: 56px 0; }
+    .section__title { font-size: 30px; margin-bottom: 28px; }
+
+    /* ---------- Шапка (Flexbox) ---------- */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #14295c;
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+    .header__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 72px;
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo__img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 3px;
+    }
+    .logo__text { font-size: 20px; font-weight: bold; line-height: 1.2; }
+    .logo__text small { display: block; font-size: 12px; font-weight: normal; color: #b8c4e6; }
+
+    .nav ul {
+      display: flex;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .nav a {
+      display: block;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: background-color 0.25s, color 0.25s;
+    }
+    .nav a:hover { background-color: #ffb703; color: #14295c; }
+
+    .menu-toggle, .burger { display: none; }
+
+    /* ---------- Кнопки с анимацией ---------- */
+    .btn {
+      display: inline-block;
+      padding: 14px 30px;
+      background-color: #ffb703;
+      color: #14295c;
+      font-size: 17px;
+      font-weight: bold;
+      border: 2px solid #ffb703;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s, color 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 18px rgba(255, 183, 3, 0.45);
+    }
+    .btn:active { transform: translateY(1px); box-shadow: none; }
+    .btn--ghost { background-color: transparent; color: #ffffff; border-color: #ffffff; }
+    .btn--ghost:hover { background-color: #ffffff; color: #14295c; box-shadow: 0 8px 18px rgba(255, 255, 255, 0.3); }
+    .btn:focus-visible, .nav a:focus-visible { outline: 3px solid #ffffff; outline-offset: 3px; }
+
+    /* ---------- Главный баннер ---------- */
+    .hero {
+      background: linear-gradient(120deg, #14295c 0%, #2b4fa8 100%);
+      color: #ffffff;
+    }
+    .hero__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 72px 20px;
+    }
+    .hero__text { max-width: 560px; }
+    .hero h1 { font-size: 44px; }
+    .hero p { font-size: 19px; color: #dbe4ff; }
+    .hero__buttons { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 24px; }
+
+    .hero__facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .fact {
+      padding: 18px 22px;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+    }
+    .fact b { display: block; font-size: 32px; color: #ffb703; }
+
+    /* ---------- Специальности (Grid) ---------- */
+    .programs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 22px;
+    }
+    .program {
+      padding: 26px;
+      background-color: #ffffff;
+      border-radius: 18px;
+      border-top: 6px solid #2b4fa8;
+      box-shadow: 0 4px 14px rgba(20, 41, 92, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .program:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgba(20, 41, 92, 0.2); }
+    .program__icon { font-size: 40px; line-height: 1; margin-bottom: 12px; }
+    .program p { color: #55608a; font-size: 15px; }
+    .program__term { font-weight: bold; color: #2b4fa8; font-size: 14px; }
+
+    /* ---------- Новости (Grid) ---------- */
+    .news-bg { background-color: #e6ebf7; }
+    .news {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      background-color: #ffffff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(20, 41, 92, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .news-card:hover { transform: translateY(-6px); box-shadow: 0 14px 28px rgba(20, 41, 92, 0.2); }
+    .news-card__top { height: 110px; display: flex; align-items: flex-end; padding: 14px 20px; color: #ffffff; font-weight: bold; }
+    .news-card:nth-child(1) .news-card__top { background: linear-gradient(135deg, #2b4fa8, #4f7be0); }
+    .news-card:nth-child(2) .news-card__top { background: linear-gradient(135deg, #e07a1f, #ffb703); color: #14295c; }
+    .news-card:nth-child(3) .news-card__top { background: linear-gradient(135deg, #1f8a70, #4fc9a4); }
+    .news-card__body { display: flex; flex-direction: column; flex: 1; padding: 20px; }
+    .news-card__body p { color: #55608a; font-size: 15px; }
+    .news-card__more { margin-top: auto; font-weight: bold; color: #2b4fa8; transition: color 0.2s, padding-left 0.2s; }
+    .news-card__more:hover { color: #e07a1f; padding-left: 6px; }
+
+    /* ---------- Подвал ---------- */
+    .footer { background-color: #0d1b3f; color: #b8c4e6; padding: 40px 0 20px; }
+    .footer__inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .footer h3 { color: #ffffff; font-size: 18px; }
+    .footer p { margin-bottom: 4px; font-size: 15px; }
+    .footer a:hover { color: #ffb703; }
+    .footer__copy { margin-top: 28px; padding-top: 16px; border-top: 1px solid #25376b; text-align: center; font-size: 14px; }
+
+    /* ---------- Адаптивность ---------- */
+    @media (max-width: 900px) {
+      .news { grid-template-columns: 1fr 1fr; }
+      .hero__inner { flex-direction: column; align-items: flex-start; padding: 48px 20px; }
+      .hero__facts { width: 100%; }
+    }
+
+    @media (max-width: 720px) {
+      .burger {
+        display: block;
+        padding: 8px 14px;
+        font-size: 26px;
+        line-height: 1;
+        border: 2px solid #ffffff;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: none;
+        background-color: #14295c;
+        padding: 0 20px 16px;
+      }
+      .nav ul { flex-direction: column; }
+      .menu-toggle:checked ~ .nav { display: block; }
+      .menu-toggle:focus-visible ~ .burger { outline: 3px solid #ffb703; }
+
+      .hero h1 { font-size: 32px; }
+      .section { padding: 40px 0; }
+      .section__title { font-size: 25px; }
+      .news { grid-template-columns: 1fr; }
+      .footer__inner { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Шапка -->
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#top" class="logo">
+        <img src="OIP.webp" alt="Логотип колледжа" class="logo__img">
+        <span class="logo__text">Высший технический Колледж<small>Учим профессиям будущего</small></span>
+      </a>
+
+      <input type="checkbox" id="menu" class="menu-toggle" aria-label="Открыть меню">
+      <label for="menu" class="burger">☰</label>
+
+      <nav class="nav">
+        <ul>
+          <li><a href="#top">Главная</a></li>
+          <li><a href="#programs">Специальности</a></li>
+          <li><a href="#news">Новости</a></li>
+          <li><a href="#contacts">Контакты</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Главный баннер -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <h1>Получите профессию, которая нужна уже сегодня</h1>
+          <p>Практические занятия, современные лаборатории и стажировки в компаниях-партнёрах. Приём заявлений открыт до 15 августа.</p>
+          <div class="hero__buttons">
+            <a href="#contacts" class="btn">Подать заявление</a>
+            <a href="#programs" class="btn btn--ghost">Выбрать специальность</a>
+          </div>
+        </div>
+        <div class="hero__facts">
+          <div class="fact"><b>25</b>лет опыта</div>
+          <div class="fact"><b>1200</b>студентов</div>
+          <div class="fact"><b>6</b>специальностей</div>
+          <div class="fact"><b>90%</b>трудоустройство</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Наши специальности -->
+    <section class="section container" id="programs">
+      <h2 class="section__title">Наши специальности</h2>
+      <div class="programs">
+        <article class="program">
+          <div class="program__icon">💻</div>
+          <h3>Программирование</h3>
+          <p>Разработка сайтов, приложений и баз данных.</p>
+          <span class="program__term">3 года 10 месяцев</span>
+        </article>
+        <article class="program">
+          <div class="program__icon">🌐</div>
+          <h3>Сетевое администрирование</h3>
+          <p>Настройка сетей, серверов и защита информации.</p>
+          <span class="program__term">3 года 10 месяцев</span>
+        </article>
+        <article class="program">
+          <div class="program__icon">🎨</div>
+          <h3>Веб-дизайн</h3>
+          <p>Интерфейсы, графика и вёрстка современных страниц.</p>
+          <span class="program__term">2 года 10 месяцев</span>
+        </article>
+        <article class="program">
+          <div class="program__icon">📊</div>
+          <h3>Экономика и бухучёт</h3>
+          <p>Финансы, налоги и работа в учётных программах.</p>
+          <span class="program__term">2 года 10 месяцев</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- Новости -->
+    <div class="news-bg">
+      <section class="section container" id="news">
+        <h2 class="section__title">Новости</h2>
+        <div class="news">
+          <article class="news-card">
+            <div class="news-card__top">12 ноября</div>
+            <div class="news-card__body">
+              <h3>День открытых дверей</h3>
+              <p>Приходите познакомиться с преподавателями, посмотреть лаборатории и задать вопросы о поступлении.</p>
+              <a href="#" class="news-card__more">Читать далее</a>
+            </div>
+          </article>
+          <article class="news-card">
+            <div class="news-card__top">3 ноября</div>
+            <div class="news-card__body">
+              <h3>Победа на хакатоне</h3>
+              <p>Команда студентов заняла первое место на региональном конкурсе по разработке приложений.</p>
+              <a href="#" class="news-card__more">Читать далее</a>
+            </div>
+          </article>
+          <article class="news-card">
+            <div class="news-card__top">28 октября</div>
+            <div class="news-card__body">
+              <h3>Новая IT-лаборатория</h3>
+              <p>В колледже открылся компьютерный класс с современным оборудованием для практики.</p>
+              <a href="#" class="news-card__more">Читать далее</a>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Подвал -->
+  <footer class="footer" id="contacts">
+    <div class="container">
+      <div class="footer__inner">
+        <div>
+          <h3>Высший Технический Колледж</h3>
+          <p>Учим профессиям будущего</p>
+        </div>
+        <div>
+          <h3>Контакты</h3>
+          <p>г. Кокшетау, ул. Абая, 10</p>
+          <p>+7 (495) 123-45-67</p>
+          <p><a href="mailto:info@vtk.example">info@vtk.example</a></p>
+        </div>
+        <div>
+          <h3>Разделы</h3>
+          <p><a href="#programs">Специальности</a></p>
+          <p><a href="#news">Новости</a></p>
+        </div>
+      </div>
+      <div class="footer__copy">© 2026 Высший Технический Колледж. Все права защищены.</div>
+    </div>
+  </footer>
+
+</body>
+</html>
